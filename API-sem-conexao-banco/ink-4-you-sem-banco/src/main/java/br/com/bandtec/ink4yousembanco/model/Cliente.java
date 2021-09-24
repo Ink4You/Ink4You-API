@@ -1,4 +1,4 @@
-package br.com.bandtec.ink4yousembanco;
+package br.com.bandtec.ink4yousembanco.model;
 
 import java.util.Date;
 
@@ -14,5 +14,9 @@ public class Cliente extends Usuario {
 
     public String getCpf() {
         return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 }

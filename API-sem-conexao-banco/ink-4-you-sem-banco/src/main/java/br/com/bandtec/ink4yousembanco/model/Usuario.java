@@ -1,10 +1,26 @@
-package br.com.bandtec.ink4yousembanco;
+package br.com.bandtec.ink4yousembanco.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
 
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Entity
 public abstract class Usuario {
 
-    private Integer userId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String email;
     private String nome;
     protected String senha;
@@ -12,6 +28,7 @@ public abstract class Usuario {
     private String cep;
     private Date dataNascimento;
     private String fotoDePerfil;
+
 
     public Usuario(String email, String nome, String senha,
                    long celular, String cep, Date dataNascimento, String fotoDePerfil) {
@@ -24,10 +41,6 @@ public abstract class Usuario {
         this.fotoDePerfil = fotoDePerfil;
     }
 
-
-    public Integer getUserId() {
-        return userId;
-    }
 
     public String getEmail() {
         return email;
@@ -57,4 +70,32 @@ public abstract class Usuario {
         return fotoDePerfil;
     }
 
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public void setCelular(long celular) {
+        this.celular = celular;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public void setDataNascimento(Date dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public void setFotoDePerfil(String fotoDePerfil) {
+        this.fotoDePerfil = fotoDePerfil;
+    }
 }
