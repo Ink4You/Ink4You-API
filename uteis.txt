@@ -1,0 +1,31 @@
+Cadastro de usuario:
+
+{
+        "nome": "Christian",
+        "data_nascimento": "2000-01-09",
+        "cpf": "48635896890",
+        "cep": "04455390",
+        "telefone": "11989051742",
+        "email": "christian.almeida@bandtec.com.br",
+        "senha": "coxinha123",
+        "foto_perfil": "ejviu"
+}
+
+
+
+Cadastro de Tatuador:
+
+{
+    "nome": "David",
+    "username": "David_Surf",
+    "data_nascimento": "2000-07-22",
+    "cnpj": "0123456789",
+    "cep": "04455390",
+    "logradouro": "Rua dos Surfistas",
+    "numero_logradouro": "99",
+    "telefone": "13980974534",
+    "email": "david.mariano@bandtec.com.br",
+    "senha": "CharlieBrownJr",
+    "conta_instagram": "David_Surf",
+    "foto_perfil": "ejviu"
+}
