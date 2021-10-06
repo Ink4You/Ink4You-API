@@ -1,6 +1,7 @@
 package br.com.bandtec.ink4yousembanco.Controller;
 
 import br.com.bandtec.ink4yousembanco.model.Tatuador;
+import br.com.bandtec.ink4yousembanco.model.Usuario;
 import br.com.bandtec.ink4yousembanco.repository.TatuadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +16,7 @@ public class TatuadorController {
     @Autowired
     private TatuadorRepository repositoryTatuador;
 
-
     // métodos do CRUD de Tatuador aqui:
-
 
     // Endpoint de busca de Tatuadores (Todos)
     @GetMapping
@@ -74,6 +73,21 @@ public class TatuadorController {
                     repositoryTatuador.deleteById(id);
                     return ResponseEntity.ok().build();
                 }).orElse(ResponseEntity.notFound().build());
+    }
+
+
+    // Endpoint de login (autenticação) do tatuador
+    @GetMapping("/login/{email}/{senha}")
+    public ResponseEntity autenticacaoTatuador(@PathVariable String email, @PathVariable String senha){
+
+        Tatuador autendicado =  repositoryTatuador.findByEmailAndSenha(email, senha);
+
+        if (autendicado == null){
+            return ResponseEntity.status(401).build();
+        }
+
+        return ResponseEntity.status(200).build();
+
     }
 
 }

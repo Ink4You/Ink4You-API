@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 @RestController
@@ -71,5 +73,19 @@ public class UsuarioController {
                 }).orElse(ResponseEntity.notFound().build());
     }
 
+
+    // Endpoint de login (autenticação) do usuario
+    @GetMapping("/login/{email}/{senha}")
+    public ResponseEntity autenticacaoUsuario(@PathVariable String email, @PathVariable String senha){
+
+        Usuario autendicado = repositoryUsuario.findByEmailAndSenha(email, senha);
+
+        if (autendicado == null){
+            return ResponseEntity.status(401).build();
+        }
+
+        return ResponseEntity.status(200).build();
+
+    }
 
 }
