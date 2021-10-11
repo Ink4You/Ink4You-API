@@ -1,7 +1,6 @@
 package br.com.bandtec.ink4yousembanco.Controller;
 
 import br.com.bandtec.ink4yousembanco.model.Tatuador;
-import br.com.bandtec.ink4yousembanco.model.Usuario;
 import br.com.bandtec.ink4yousembanco.repository.TatuadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("tatuadores")
 public class TatuadorController {
@@ -86,7 +86,7 @@ public class TatuadorController {
             return ResponseEntity.status(401).build();
         }
 
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.status(200).body(autendicado);
 
     }
 
