@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.*;
 
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
