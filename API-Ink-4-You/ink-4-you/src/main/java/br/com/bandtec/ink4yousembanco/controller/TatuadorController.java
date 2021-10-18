@@ -1,11 +1,15 @@
-package br.com.bandtec.ink4yousembanco.Controller;
+package br.com.bandtec.ink4yousembanco.controller;
 
 import br.com.bandtec.ink4yousembanco.model.Tatuador;
 import br.com.bandtec.ink4yousembanco.repository.TatuadorRepository;
+import br.com.bandtec.ink4yousembanco.uteis.CsvAdapter;
+import br.com.bandtec.ink4yousembanco.uteis.ListaObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -87,6 +91,24 @@ public class TatuadorController {
         }
 
         return ResponseEntity.status(200).body(autendicado);
+
+    }
+
+    // Endpoint para gerar o relatorio em csv e fazer o download
+    @GetMapping("/relatorio-tatuadores.csv")
+    public void getCsvTatuador(HttpServletResponse response) throws IOException {
+
+        List<Tatuador> listaJava = repositoryTatuador.findAll();
+
+        ListaObj<Tatuador> lista = new ListaObj<>(listaJava.size());
+
+        for (int i = 0; i < repositoryTatuador.count(); i++) {
+            lista.adicionar(listaJava.get(i));
+        }
+
+        response.setContentType("text/csv");
+        CsvAdapter.downloadCsvTatuador(response.getWriter(), lista);
+        response.setStatus(200);
 
     }
 
