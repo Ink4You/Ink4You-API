@@ -87,7 +87,7 @@ public class UsuarioController {
             return ResponseEntity.status(401).build();
         }
 
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.status(200).body(autendicado);
 
     }
 
