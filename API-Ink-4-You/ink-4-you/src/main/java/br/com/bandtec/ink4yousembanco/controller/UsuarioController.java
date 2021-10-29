@@ -41,25 +41,26 @@ public class UsuarioController {
 
     // POST de cadastro de usuario
     @PostMapping("/cadastro-usuario")
-    public Usuario cadastroCliente(@RequestBody Usuario cli){
-        return repositoryUsuario.save(cli);
+    public ResponseEntity cadastroUsuario(@RequestBody Usuario user){
+        repositoryUsuario.save(user);
+        return ResponseEntity.status(201).build();
     }
 
 
     // EndPoint de alteração de dados do usuario por ID
     @PutMapping(value="/{id}")
-    public ResponseEntity update(@PathVariable("id") Integer id,
-                                 @RequestBody Usuario use) {
+    public ResponseEntity updateUsuario(@PathVariable("id") Integer id,
+                                 @RequestBody Usuario user) {
         return repositoryUsuario.findById(id)
                 .map(record -> {
-                    record.setNome(use.getNome());
-                    record.setData_nascimento(use.getData_nascimento());
-                    record.setCpf(use.getCpf());
-                    record.setCep(use.getCep());
-                    record.setTelefone(use.getTelefone());
-                    record.setEmail(use.getEmail());
-                    record.setSenha(use.getSenha());
-                    record.setFoto_perfil(use.getFoto_perfil());
+                    record.setNome(user.getNome());
+                    record.setData_nascimento(user.getData_nascimento());
+                    record.setCpf(user.getCpf());
+                    record.setCep(user.getCep());
+                    record.setTelefone(user.getTelefone());
+                    record.setEmail(user.getEmail());
+                    record.setSenha(user.getSenha());
+                    record.setFoto_perfil(user.getFoto_perfil());
                     Usuario updated = repositoryUsuario.save(record);
                     return ResponseEntity.ok().body(updated);
                 }).orElse(ResponseEntity.notFound().build());
@@ -68,7 +69,7 @@ public class UsuarioController {
 
     // Endpoint para deletar o usuario por ID
     @DeleteMapping(path ={"/{id}"})
-    public ResponseEntity <?> delete(@PathVariable Integer id) {
+    public ResponseEntity <?> deleteUsuario(@PathVariable Integer id) {
         return repositoryUsuario.findById(id)
                 .map(record -> {
                     repositoryUsuario.deleteById(id);
@@ -90,6 +91,7 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(autendicado);
 
     }
+
 
     // Endpoint para gerar o relatorio em csv e fazer o download
     @GetMapping("/relatorio-usuarios.csv")

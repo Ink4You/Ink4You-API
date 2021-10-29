@@ -20,8 +20,9 @@ public class RelatoController {
 
     // Endpoint para postar um relato
     @PostMapping("/inserir-relato")
-    public Relato postarRelato(@RequestBody Relato relato) {
-        return repositoryRelato.save(relato);
+    public ResponseEntity postarRelato(@RequestBody Relato relato) {
+        repositoryRelato.save(relato);
+        return ResponseEntity.status(201).build();
     }
 
     // Endpoint para deletar o relato por id

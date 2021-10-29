@@ -40,29 +40,29 @@ public class TatuadorController {
 
     // POST de cadastro de Tatuador
     @PostMapping("/cadastro-tatuador")
-    public Tatuador cadastroTatuador(@RequestBody Tatuador tatu){
-        return repositoryTatuador.save(tatu);
+    public ResponseEntity cadastroTatuador(@RequestBody Tatuador tatuador){
+        repositoryTatuador.save(tatuador);
+        return ResponseEntity.status(201).build();
     }
-
 
     // EndPoint de alteração de dados do Tatuador
     @PutMapping(value="/{id}")
-    public ResponseEntity update(@PathVariable("id") Integer id,
-                                 @RequestBody Tatuador tatu) {
+    public ResponseEntity updateTatuador(@PathVariable("id") Integer id,
+                                 @RequestBody Tatuador tatuador) {
         return repositoryTatuador.findById(id)
                 .map(record -> {
-                    record.setNome(tatu.getNome());
-                    record.setUsername(tatu.getUsername());
-                    record.setData_nascimento(tatu.getData_nascimento());
-                    record.setCnpj(tatu.getCnpj());
-                    record.setCep(tatu.getCep());
-                    record.setLogradouro(tatu.getLogradouro());
-                    record.setNumero_logradouro(tatu.getNumero_logradouro());
-                    record.setTelefone(tatu.getTelefone());
-                    record.setEmail(tatu.getEmail());
-                    record.setSenha(tatu.getSenha());
-                    record.setConta_instagram(tatu.getConta_instagram());
-                    record.setFoto_perfil(tatu.getFoto_perfil());
+                    record.setNome(tatuador.getNome());
+                    record.setUsername(tatuador.getUsername());
+                    record.setData_nascimento(tatuador.getData_nascimento());
+                    record.setCnpj(tatuador.getCnpj());
+                    record.setCep(tatuador.getCep());
+                    record.setLogradouro(tatuador.getLogradouro());
+                    record.setNumero_logradouro(tatuador.getNumero_logradouro());
+                    record.setTelefone(tatuador.getTelefone());
+                    record.setEmail(tatuador.getEmail());
+                    record.setSenha(tatuador.getSenha());
+                    record.setConta_instagram(tatuador.getConta_instagram());
+                    record.setFoto_perfil(tatuador.getFoto_perfil());
                     Tatuador updated = repositoryTatuador.save(record);
                     return ResponseEntity.ok().body(updated);
                 }).orElse(ResponseEntity.notFound().build());
@@ -71,7 +71,7 @@ public class TatuadorController {
 
     // Endpoint para deletar o Tatuador por ID
     @DeleteMapping(path ={"/{id}"})
-    public ResponseEntity <?> delete(@PathVariable Integer id) {
+    public ResponseEntity <?> deleteTatuador(@PathVariable Integer id) {
         return repositoryTatuador.findById(id)
                 .map(record -> {
                     repositoryTatuador.deleteById(id);
