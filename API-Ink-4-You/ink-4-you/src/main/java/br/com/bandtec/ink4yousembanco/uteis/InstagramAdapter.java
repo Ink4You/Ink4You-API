@@ -6,6 +6,9 @@ public class InstagramAdapter {
     }
 
     public String changeNickname(String instagramNickname){
+        if(instagramNickname.startsWith("@")){
+            return instagramNickname;
+        }
         return String.format("@%s", instagramNickname);
     }
 }

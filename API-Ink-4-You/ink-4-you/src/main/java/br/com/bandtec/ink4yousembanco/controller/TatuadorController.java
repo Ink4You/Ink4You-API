@@ -14,7 +14,7 @@ import java.util.List;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("tatuadores")
+@RequestMapping("/tatuadores")
 public class TatuadorController {
 
     @Autowired
@@ -39,7 +39,7 @@ public class TatuadorController {
 
 
     // POST de cadastro de Tatuador
-    @PostMapping("cadastro-tatuador")
+    @PostMapping("/cadastro-tatuador")
     public Tatuador cadastroTatuador(@RequestBody Tatuador tatu){
         return repositoryTatuador.save(tatu);
     }

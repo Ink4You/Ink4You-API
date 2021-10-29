@@ -40,7 +40,7 @@ public class UsuarioController {
 
 
     // POST de cadastro de usuario
-    @PostMapping("cadastro-usuario")
+    @PostMapping("/cadastro-usuario")
     public Usuario cadastroCliente(@RequestBody Usuario cli){
         return repositoryUsuario.save(cli);
     }
