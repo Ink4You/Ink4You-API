@@ -43,7 +43,7 @@ public class UsuarioController {
     @PostMapping("/cadastro-usuario")
     public ResponseEntity cadastroUsuario(@RequestBody Usuario user){
         repositoryUsuario.save(user);
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(201).body(user);
     }
 
 
