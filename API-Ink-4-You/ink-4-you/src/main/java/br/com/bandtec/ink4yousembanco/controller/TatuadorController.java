@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -110,6 +111,20 @@ public class TatuadorController {
         CsvAdapter.downloadCsvTatuador(response.getWriter(), lista);
         response.setStatus(200);
 
+    }
+
+    @GetMapping("/conexao/instagram")
+    public ResponseEntity getUsuariosInstagram(){
+        List<String> contaInstagram = new ArrayList<>();
+
+        List<Tatuador> tatuadores = repositoryTatuador.findAll();
+
+        for(int i = 0; i < tatuadores.size(); i++){
+            if(tatuadores.get(i).getConta_instagram() != null){
+                contaInstagram.add(tatuadores.get(i).getConta_instagram());
+            }
+        }
+        return ResponseEntity.ok().body(contaInstagram);
     }
 
 }
