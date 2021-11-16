@@ -10,8 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin("*")
 @RestController
@@ -25,8 +29,22 @@ public class TatuadorController {
 
     // Endpoint de busca de Tatuadores (Todos)
     @GetMapping
-    public List findTatuadores(){
-        return repositoryTatuador.findAll();
+    public ResponseEntity findTatuadores(){
+        List<Tatuador> tatuadores = repositoryTatuador.findAll();
+        LocalDate now = LocalDate.now();
+        if (tatuadores != null){
+            for (int i = 0; i < tatuadores.size(); i++){
+
+                LocalDate nascimento =  tatuadores.get(i).getData_nascimento();
+
+                if ((nascimento != null)){
+                    int years = Period.between(nascimento, now).getYears();
+                    tatuadores.get(i).setIdade(years);
+                }
+            }
+            return ResponseEntity.status(200).body(tatuadores);
+        }
+        return ResponseEntity.status(401).build();
     }
 
 
@@ -87,11 +105,16 @@ public class TatuadorController {
 
         Tatuador autendicado =  repositoryTatuador.findByEmailAndSenha(email, senha);
 
-        if (autendicado == null){
-            return ResponseEntity.status(401).build();
+        LocalDate nascimento = autendicado.getData_nascimento();
+        LocalDate now = LocalDate.now();
+
+        if (autendicado != null) {
+            int years = Period.between(nascimento, now).getYears();
+            autendicado.setIdade(years);
+            return ResponseEntity.status(200).body(autendicado);
         }
 
-        return ResponseEntity.status(200).body(autendicado);
+        return ResponseEntity.status(401).build();
 
     }
 

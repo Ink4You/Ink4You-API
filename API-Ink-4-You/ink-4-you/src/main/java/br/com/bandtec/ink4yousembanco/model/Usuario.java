@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -20,14 +21,27 @@ public class Usuario {
     private Integer id_usuario;
 
     private String nome;
-    private Date data_nascimento;
+    private LocalDate data_nascimento;
     private String cpf;
     private String cep;
     private String telefone;
     private String email;
     private String senha;
     private String foto_perfil;
+    @Transient
     private Integer idade;
 
+    public Usuario(Integer id_usuario, String nome, LocalDate data_nascimento, String cpf, String cep, String telefone, String email, String senha, String foto_perfil) {
+        this.id_usuario = id_usuario;
+        this.nome = nome;
+        this.data_nascimento = data_nascimento;
+        this.cpf = cpf;
+        this.cep = cep;
+        this.telefone = telefone;
+        this.email = email;
+        this.senha = senha;
+        this.foto_perfil = foto_perfil;
+        this.idade = 0;
+    }
 }
 

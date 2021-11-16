@@ -1,5 +1,6 @@
 package br.com.bandtec.ink4yousembanco.controller;
 
+import br.com.bandtec.ink4yousembanco.model.Tatuador;
 import br.com.bandtec.ink4yousembanco.model.Usuario;
 import br.com.bandtec.ink4yousembanco.repository.UsuarioRepository;
 import br.com.bandtec.ink4yousembanco.uteis.CsvAdapter;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.*;
 
 
@@ -25,8 +28,23 @@ public class UsuarioController {
 
     // Endpoint de busca de Usuarios (Todos)
     @GetMapping
-    public List findClientes(){
-        return repositoryUsuario.findAll();
+    public ResponseEntity findUsuarios(){
+        List<Usuario> usuarios = repositoryUsuario.findAll();
+        LocalDate now = LocalDate.now();
+
+        if (usuarios != null){
+            for (int i = 0; i < usuarios.size(); i++){
+
+                LocalDate nascimento =  usuarios.get(i).getData_nascimento();
+
+                if ((nascimento != null)){
+                    int years = Period.between(nascimento, now).getYears();
+                    usuarios.get(i).setIdade(years);
+                }
+            }
+            return ResponseEntity.status(200).body(usuarios);
+        }
+        return ResponseEntity.status(401).build();
     }
 
 
@@ -80,15 +98,20 @@ public class UsuarioController {
 
     // Endpoint de login (autenticação) do usuario
     @GetMapping("/login/{email}/{senha}")
-    public ResponseEntity autenticacaoUsuario(@PathVariable String email, @PathVariable String senha){
+    public ResponseEntity autenticacaoTatuador(@PathVariable String email, @PathVariable String senha){
 
-        Usuario autendicado = repositoryUsuario.findByEmailAndSenha(email, senha);
+        Usuario autendicado =  repositoryUsuario.findByEmailAndSenha(email, senha);
 
-        if (autendicado == null){
-            return ResponseEntity.status(401).build();
+        LocalDate nascimento = autendicado.getData_nascimento();
+        LocalDate now = LocalDate.now();
+
+        if (autendicado != null){
+            int years = Period.between(nascimento, now).getYears();
+            autendicado.setIdade(years);
+            return ResponseEntity.status(200).body(autendicado);
         }
 
-        return ResponseEntity.status(200).body(autendicado);
+        return ResponseEntity.status(401).build();
 
     }
 
