@@ -39,13 +39,17 @@ public class RelatoController {
     public ResponseEntity<?> buscarRelato(){
         List<Relato> relatos = repositoryRelato.findAll();
 
-        List<Relato> ultimosRegistros = new ArrayList<>();
-
-        for (Integer x = relatos.size() - 1; x > relatos.size() - 7; x--){
-            ultimosRegistros.add(relatos.get(x));
+        if(relatos.size() < 7){
+            return ResponseEntity.status(200).body(relatos);
         }
 
-       return ResponseEntity.status(200).body(ultimosRegistros);
+        List<Relato> ultimosRegistros = new ArrayList<>();
+
+            for (Integer x = relatos.size() - 1; x > relatos.size() - 7; x--){
+                ultimosRegistros.add(relatos.get(x));
+            }
+            return ResponseEntity.status(200).body(ultimosRegistros);
+
 
     }
 }
