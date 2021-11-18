@@ -50,7 +50,6 @@ public class RelatoController {
             }
             return ResponseEntity.status(200).body(ultimosRegistros);
 
-
     }
 }
 
