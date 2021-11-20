@@ -34,6 +34,8 @@ public class Tatuador {
     private String foto_perfil;
     @Transient
     private Integer idade;
+    @Transient
+    private String sobre;
 
     public Tatuador(Integer id_tatuador, String nome, String username, LocalDate data_nascimento, String cnpj, String cep, String logradouro, String numero_logradouro, String telefone, String email, String senha, String conta_instagram, String foto_perfil) {
         this.id_tatuador = id_tatuador;
@@ -50,5 +52,6 @@ public class Tatuador {
         this.conta_instagram = conta_instagram;
         this.foto_perfil = foto_perfil;
         this.idade = 0;
+        this.sobre = "";
     }
 }
