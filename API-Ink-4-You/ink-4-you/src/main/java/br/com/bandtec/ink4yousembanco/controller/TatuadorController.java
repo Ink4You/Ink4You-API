@@ -4,9 +4,13 @@ import br.com.bandtec.ink4yousembanco.model.Tatuador;
 import br.com.bandtec.ink4yousembanco.repository.TatuadorRepository;
 import br.com.bandtec.ink4yousembanco.uteis.CsvAdapter;
 import br.com.bandtec.ink4yousembanco.uteis.ListaObj;
+import br.com.bandtec.ink4yousembanco.uteis.ResponseWebScraper;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -148,6 +152,27 @@ public class TatuadorController {
             }
         }
         return ResponseEntity.ok().body(contaInstagram);
+    }
+
+    @GetMapping("/instagram/buscar-fotos/{account}")
+    public ResponseEntity getInstagramImages(@PathVariable String account) {
+
+
+        List<String> instagramImagesSrc = new ArrayList<>();
+        ResponseWebScraper response = null;
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            response = restTemplate.getForObject(String.format("http://localhost:3000/insta/%s",account), ResponseWebScraper.class);
+        } catch(Exception err) {
+            return ResponseEntity.status(503).build();
+        }
+
+        if(response.getData().isEmpty()) {
+            return ResponseEntity.status(204).body(response);
+        }
+
+        return ResponseEntity.ok().body(response);
+
     }
 
 }
