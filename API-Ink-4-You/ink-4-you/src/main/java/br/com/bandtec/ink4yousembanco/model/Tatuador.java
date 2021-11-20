@@ -34,7 +34,6 @@ public class Tatuador {
     private String foto_perfil;
     @Transient
     private Integer idade;
-    @Transient
     private String sobre;
 
     public Tatuador(Integer id_tatuador, String nome, String username, LocalDate data_nascimento, String cnpj, String cep, String logradouro, String numero_logradouro, String telefone, String email, String senha, String conta_instagram, String foto_perfil) {
