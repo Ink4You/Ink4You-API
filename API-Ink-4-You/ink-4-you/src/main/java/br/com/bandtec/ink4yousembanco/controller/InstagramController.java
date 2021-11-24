@@ -1,8 +1,8 @@
 package br.com.bandtec.ink4yousembanco.controller;
 
-import br.com.bandtec.ink4yousembanco.model.InstagramImagem;
+import br.com.bandtec.ink4yousembanco.model.Instagram;
 import br.com.bandtec.ink4yousembanco.model.Tatuador;
-import br.com.bandtec.ink4yousembanco.repository.InstagramImageRepository;
+import br.com.bandtec.ink4yousembanco.repository.InstagramRepository;
 import br.com.bandtec.ink4yousembanco.repository.TatuadorRepository;
 import br.com.bandtec.ink4yousembanco.uteis.ResponseWebScraper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +16,10 @@ import java.util.List;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/instagram")
-public class InstagramImageController {
+public class InstagramController {
 
     @Autowired
-    private InstagramImageRepository repositoryInstagram;
+    private InstagramRepository repositoryInstagram;
     @Autowired
     private TatuadorRepository repositoryTatuador;
 
@@ -45,8 +45,8 @@ public class InstagramImageController {
     }
 
     @PostMapping("/cadastrar-foto/")
-    public ResponseEntity postInstagramImage(@RequestBody InstagramImagem instagramImagem) {
-        repositoryInstagram.save(instagramImagem);
+    public ResponseEntity postInstagramImage(@RequestBody Instagram instagram) {
+        repositoryInstagram.save(instagram);
         return ResponseEntity.status(201).build();
     }
 
@@ -68,13 +68,19 @@ public class InstagramImageController {
             ResponseWebScraper responseBody = (ResponseWebScraper) response.getBody();
             images.addAll(responseBody.getData());
 
-//            for (String image : images) {
-//                if (!repositoryInstagram.existsByImage(image)) {
+            repositoryInstagram.deleteByIdTatuador(idTatuador);
 
-                    postInstagramImage(new InstagramImagem(tatuador.getId_tatuador(),images.get(0)));
-//                }
-//            }
-            return ResponseEntity.status(201).body(images);
+
+            for (int i = 0; i < images.size(); i++) {
+                Instagram img = new Instagram();
+                img.setId_tatuador(idTatuador);
+                img.setImagem(images.get(i));
+
+                postInstagramImage(img);
+            }
+
+//            return ResponseEntity.status(201).body(images);
+            return ResponseEntity.status(201).build();
         }
         return ResponseEntity.status(503).build();
     }

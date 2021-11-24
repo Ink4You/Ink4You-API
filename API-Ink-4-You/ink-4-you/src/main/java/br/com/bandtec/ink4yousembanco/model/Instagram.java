@@ -4,16 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-public class InstagramImagem {
+//@Table(name="instagramImagem")
+public class Instagram {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,9 +19,4 @@ public class InstagramImagem {
 
     private Integer id_tatuador;
     private String imagem;
-
-    public InstagramImagem(Integer id_tatuador, String imagem) {
-        this.id_tatuador = id_tatuador;
-        this.imagem = imagem;
-    }
 }
