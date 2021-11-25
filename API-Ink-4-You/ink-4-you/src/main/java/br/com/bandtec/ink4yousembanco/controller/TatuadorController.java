@@ -3,6 +3,7 @@ package br.com.bandtec.ink4yousembanco.controller;
 import br.com.bandtec.ink4yousembanco.model.Tatuador;
 import br.com.bandtec.ink4yousembanco.repository.TatuadorRepository;
 import br.com.bandtec.ink4yousembanco.uteis.CsvAdapter;
+import br.com.bandtec.ink4yousembanco.uteis.FilaObj;
 import br.com.bandtec.ink4yousembanco.uteis.ListaObj;
 import br.com.bandtec.ink4yousembanco.uteis.ResponseWebScraper;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,12 +15,10 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @CrossOrigin("*")
 @RestController
@@ -123,22 +122,23 @@ public class TatuadorController {
     }
 
     // Endpoint para gerar o relatorio em csv e fazer o download
-    @GetMapping("/relatorio-tatuadores.csv")
-    public void getCsvTatuador(HttpServletResponse response) throws IOException {
+//    @GetMapping("/relatorio-tatuadores.csv")
+//    public void getCsvTatuador(HttpServletResponse response) throws IOException {
+//
+//        List<Tatuador> listaJava = repositoryTatuador.findAll();
+//
+//        ListaObj<Tatuador> lista = new ListaObj<>(listaJava.size());
+//
+//        for (int i = 0; i < repositoryTatuador.count(); i++) {
+//            lista.adicionar(listaJava.get(i));
+//        }
+//
+//        response.setContentType("text/csv");
+//        CsvAdapter.downloadCsvTatuador(response.getWriter(), lista);
+//        response.setStatus(200);
+//
+//    }
 
-        List<Tatuador> listaJava = repositoryTatuador.findAll();
-
-        ListaObj<Tatuador> lista = new ListaObj<>(listaJava.size());
-
-        for (int i = 0; i < repositoryTatuador.count(); i++) {
-            lista.adicionar(listaJava.get(i));
-        }
-
-        response.setContentType("text/csv");
-        CsvAdapter.downloadCsvTatuador(response.getWriter(), lista);
-        response.setStatus(200);
-
-    }
 
     @GetMapping("/conexao/instagram")
     public ResponseEntity getUsuariosInstagram(){
@@ -153,6 +153,7 @@ public class TatuadorController {
         }
         return ResponseEntity.ok().body(contaInstagram);
     }
+
 
     @GetMapping("/instagram/buscar-fotos/{account}")
     public ResponseEntity getInstagramImages(@PathVariable String account) {
@@ -172,6 +173,65 @@ public class TatuadorController {
         }
 
         return ResponseEntity.ok().body(response);
+
+    }
+
+
+
+    @GetMapping("/relatorio-tatuadores")
+    public ResponseEntity gravaArquivoTxt() {
+
+        List<Tatuador> tatuadors = repositoryTatuador.findAll();
+
+        if (!tatuadors.isEmpty()){
+
+            int contaRegDados = 0;      // contador de registros de dados (para poder gravar no trailer)
+
+            // Monta o registro de header
+            String header = "tatuadores";
+            Date dataDeHoje = new Date();       // Data e hora do momento, no formato padrão do Java
+            SimpleDateFormat formataData = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");     // configura o padrão de formatação da data e horário
+            header += formataData.format(dataDeHoje);   // Formata a data e hora para o padrão desejado
+            header += "01";
+
+            // Grava o header
+            CsvAdapter.gravaRegistro(header, "arquivo");
+
+
+            for (Tatuador t : tatuadors){
+
+                String corpo = "02";
+                corpo += String.format("%03d",t.getId_tatuador());
+                corpo += String.format("%-15.15s",t.getNome());
+                corpo += String.format("%-15.15s",t.getUsername());
+                corpo += String.format("%-15.15s",t.getData_nascimento());
+                corpo += String.format("%-14.14s",t.getCnpj());
+                corpo += String.format("%-10.10s",t.getCep());
+                corpo += String.format("%-30.30s",t.getLogradouro());
+                corpo += String.format("%-3.3s",t.getNumero_logradouro());
+                corpo += String.format("-15.15s",t.getTelefone());
+                corpo += String.format("%-30.30s",t.getEmail());
+                corpo += String.format("%-15.15s",t.getConta_instagram());
+
+
+                // Incrementa o contador de registro de dados
+                contaRegDados++;
+                // Grava o registro de corpo no arquivo
+                CsvAdapter.gravaRegistro(corpo, "arquivo");
+
+            }
+
+
+            // Monta e grava o registro de trailer
+            String trailer = "01";
+            trailer += String.format("%010d", contaRegDados);   // contador de registros de dados
+            CsvAdapter.gravaRegistro(trailer, "arquivo");
+
+            return ResponseEntity.status(201).build();
+
+        }
+
+        return ResponseEntity.status(204).build();
 
     }
 
