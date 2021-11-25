@@ -117,21 +117,21 @@ public class UsuarioController {
 
 
     // Endpoint para gerar o relatorio em csv e fazer o download
-    @GetMapping("/relatorio-usuarios.csv")
-    public void getCsvUsuario(HttpServletResponse response) throws IOException {
-
-        List<Usuario> listaJava = repositoryUsuario.findAll();
-
-        ListaObj<Usuario> lista = new ListaObj<>(listaJava.size());
-
-        for (int i = 0; i < repositoryUsuario.count(); i++) {
-            lista.adicionar(listaJava.get(i));
-        }
-
-        response.setContentType("text/csv");
-        CsvAdapter.downloadCsvUsuario(response.getWriter(), lista);
-        response.setStatus(200);
-
-    }
+//    @GetMapping("/relatorio-usuarios.csv")
+//    public void getCsvUsuario(HttpServletResponse response) throws IOException {
+//
+//        List<Usuario> listaJava = repositoryUsuario.findAll();
+//
+//        ListaObj<Usuario> lista = new ListaObj<>(listaJava.size());
+//
+//        for (int i = 0; i < repositoryUsuario.count(); i++) {
+//            lista.adicionar(listaJava.get(i));
+//        }
+//
+//        response.setContentType("text/csv");
+//        CsvAdapter.downloadCsvUsuario(response.getWriter(), lista);
+//        response.setStatus(200);
+//
+//    }
 
 }

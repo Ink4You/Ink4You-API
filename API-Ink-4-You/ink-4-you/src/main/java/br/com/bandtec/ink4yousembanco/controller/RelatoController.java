@@ -2,6 +2,7 @@ package br.com.bandtec.ink4yousembanco.controller;
 
 import br.com.bandtec.ink4yousembanco.model.Relato;
 import br.com.bandtec.ink4yousembanco.repository.RelatoRepository;
+import br.com.bandtec.ink4yousembanco.uteis.PilhaObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,7 @@ public class RelatoController {
                 }).orElse(ResponseEntity.notFound().build());
     }
 
+
     @GetMapping("/buscar-relatos")
     public ResponseEntity<?> buscarRelato(){
         List<Relato> relatos = repositoryRelato.findAll();
@@ -43,14 +45,19 @@ public class RelatoController {
             return ResponseEntity.status(200).body(relatos);
         }
 
-        List<Relato> ultimosRegistros = new ArrayList<>();
 
-            for (Integer x = relatos.size() - 1; x > relatos.size() - 7; x--){
-                ultimosRegistros.add(relatos.get(x));
+        PilhaObj<Relato> ultimosRegistrosPilha = new PilhaObj<>(relatos.size());
+
+
+            for (Integer i = relatos.size() - 1; i > relatos.size() - 7; i--){
+                ultimosRegistrosPilha.push(relatos.get(i));
             }
-            return ResponseEntity.status(200).body(ultimosRegistros);
+
+
+        return ResponseEntity.status(200).body(ultimosRegistrosPilha);
 
     }
 }
+
 
 
