@@ -154,7 +154,6 @@ public class TatuadorController {
         return ResponseEntity.ok().body(contaInstagram);
     }
 
-
     @GetMapping("/instagram/buscar-fotos/{account}")
     public ResponseEntity getInstagramImages(@PathVariable String account) {
 
@@ -234,5 +233,4 @@ public class TatuadorController {
         return ResponseEntity.status(204).build();
 
     }
-
 }
