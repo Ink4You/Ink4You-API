@@ -10,7 +10,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Data
 @Entity
-//@Table(name="instagramImagem")
 public class Instagram {
 
     @Id
@@ -19,4 +18,5 @@ public class Instagram {
 
     private Integer id_tatuador;
     private String imagem;
+    private byte[] imagem_byte;
 }
