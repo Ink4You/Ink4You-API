@@ -10,8 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.*;
+import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin("*")
 @RestController
@@ -23,11 +28,23 @@ public class InstagramController {
     @Autowired
     private TatuadorRepository repositoryTatuador;
 
+    @GetMapping("/{id_tatuador}")
+    public ResponseEntity getImages(@PathVariable Integer id_tatuador) {
+        if (id_tatuador < 0 || id_tatuador == null) {
+            return ResponseEntity.status(404).build();
+        }
+
+        Object[] images = repositoryInstagram.findImagemByIdTatuador(id_tatuador);
+
+        return images != null
+                ? ResponseEntity.status(200).body(images)
+                : ResponseEntity.status(204).build();
+    }
+
     @GetMapping("/buscar-fotos/{account}")
     public ResponseEntity getInstagramImages(@PathVariable String account) {
         //http://localhost:8080/instagram/buscar-fotos/rafanildsz
 
-        //List<String> instagramImagesSrc = new ArrayList<>();
         ResponseWebScraper response = null;
         try {
             RestTemplate restTemplate = new RestTemplate();
@@ -70,11 +87,23 @@ public class InstagramController {
 
             repositoryInstagram.deleteByIdTatuador(idTatuador);
 
-
             for (int i = 0; i < images.size(); i++) {
                 Instagram img = new Instagram();
                 img.setId_tatuador(idTatuador);
                 img.setImagem(images.get(i));
+
+                try {
+                    URL url = new URL(img.getImagem());
+                    InputStream in = new BufferedInputStream(url.openStream());
+                    OutputStream out = new BufferedOutputStream(new FileOutputStream("./src/main/resources/Image-Porkeri_00"+i+".jpg"));
+
+                    byte[] foto = in.readAllBytes();
+
+                    img.setImagem_byte(foto);
+
+                } catch (IOException err) {
+                    System.out.println(err);
+                }
 
                 postInstagramImage(img);
             }
