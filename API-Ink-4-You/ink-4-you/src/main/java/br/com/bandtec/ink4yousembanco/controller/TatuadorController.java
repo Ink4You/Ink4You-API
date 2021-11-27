@@ -85,6 +85,7 @@ public class TatuadorController {
                     record.setSenha(tatuador.getSenha());
                     record.setConta_instagram(tatuador.getConta_instagram());
                     record.setFoto_perfil(tatuador.getFoto_perfil());
+                    record.setUf(tatuador.getUf());
                     Tatuador updated = repositoryTatuador.save(record);
                     return ResponseEntity.ok().body(updated);
                 }).orElse(ResponseEntity.notFound().build());
