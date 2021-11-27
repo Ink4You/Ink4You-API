@@ -36,11 +36,12 @@ public class Tatuador {
     private String senha;
     private String conta_instagram;
     private String foto_perfil;
+    private String uf;
     @Transient
     private Integer idade;
     private String sobre;
 
-    public Tatuador(Integer id_tatuador, String nome, String username, LocalDate data_nascimento, String cnpj, String cep, String logradouro, String numero_logradouro, String telefone, String email, String senha, String conta_instagram, String foto_perfil) {
+    public Tatuador(Integer id_tatuador, String nome, String username, LocalDate data_nascimento, String cnpj, String cep, String logradouro, String numero_logradouro, String telefone, String email, String senha, String conta_instagram, String foto_perfil, String uf) {
         this.id_tatuador = id_tatuador;
         this.nome = nome;
         this.username = username;
@@ -54,8 +55,8 @@ public class Tatuador {
         this.senha = senha;
         this.conta_instagram = conta_instagram;
         this.foto_perfil = foto_perfil;
+        this.uf = uf;
         this.idade = 0;
         this.sobre = "";
     }
-
 }

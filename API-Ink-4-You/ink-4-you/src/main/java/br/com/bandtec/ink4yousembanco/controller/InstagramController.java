@@ -51,7 +51,7 @@ public class InstagramController {
         ResponseWebScraper response = null;
         try {
             RestTemplate restTemplate = new RestTemplate();
-            response = restTemplate.getForObject(String.format("http://localhost:3000/insta/%s",account), ResponseWebScraper.class);
+            response = restTemplate.getForObject(String.format("http://localhost:3001/insta/%s",account), ResponseWebScraper.class);
         } catch(Exception err) {
             return ResponseEntity.status(503).build();
         }
