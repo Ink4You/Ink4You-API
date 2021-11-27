@@ -12,11 +12,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @CrossOrigin("*")
 @RestController
@@ -27,6 +24,12 @@ public class InstagramController {
     private InstagramRepository repositoryInstagram;
     @Autowired
     private TatuadorRepository repositoryTatuador;
+
+    @GetMapping
+    public ResponseEntity getImages() {
+        List<Instagram> instagramImages = repositoryInstagram.findAll();
+        return ResponseEntity.ok().body(instagramImages);
+    }
 
     @GetMapping("/{id_tatuador}")
     public ResponseEntity getImages(@PathVariable Integer id_tatuador) {
@@ -69,7 +72,7 @@ public class InstagramController {
 
     @GetMapping("/atualizar-imagens/{idTatuador}")
     public ResponseEntity updateInstagramImages(@PathVariable Integer idTatuador) {
-        System.out.println("teste");
+        //System.out.println("teste");
         if (idTatuador <= 0) {
             ResponseEntity.status(404).build();
         } else {
@@ -108,7 +111,6 @@ public class InstagramController {
                 postInstagramImage(img);
             }
 
-//            return ResponseEntity.status(201).body(images);
             return ResponseEntity.status(201).build();
         }
         return ResponseEntity.status(503).build();
