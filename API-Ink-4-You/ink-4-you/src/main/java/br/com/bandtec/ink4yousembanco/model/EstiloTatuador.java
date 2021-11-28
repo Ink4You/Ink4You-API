@@ -10,15 +10,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Data
 @Entity
-public class Tatuagem {
-
+public class EstiloTatuador {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_tatuagem;
-
-    private String titulo;
-    private String local_tatuagem;
-    private String descricao;
-    private String src_imagem;
+    private Integer id;
+    private Integer id_estilo;
     private Integer id_tatuador;
+
 }

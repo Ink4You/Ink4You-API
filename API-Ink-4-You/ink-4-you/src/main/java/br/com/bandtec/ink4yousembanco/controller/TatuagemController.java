@@ -58,8 +58,7 @@ public class TatuagemController {
                     record.setLocal_tatuagem(tatuagem.getLocal_tatuagem());
                     record.setDescricao(tatuagem.getDescricao());
                     record.setSrc_imagem(tatuagem.getSrc_imagem());
-                    record.setDestaque(tatuagem.getDestaque());
-                    record.setId_tatuador(tatuagem.getId_tatuador());
+//                    record.setId_tatuador(tatuagem.getId_tatuador());
                     Tatuagem update = repository.save(record);
                     return ResponseEntity.ok().body(update);
                 }).orElse(ResponseEntity.notFound().build());

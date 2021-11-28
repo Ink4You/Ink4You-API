@@ -53,5 +53,4 @@ public class AvaliacaoController {
         if (media.size() == 0) return ResponseEntity.status(404).build();
         return ResponseEntity.status(200).body(mediaCalculada / media.size());
     }
-
 }
