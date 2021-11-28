@@ -1,6 +1,7 @@
 package br.com.bandtec.ink4yousembanco.model;
 
 import br.com.bandtec.ink4yousembanco.uteis.InstagramAdapter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,13 +37,15 @@ public class Tatuador {
     private String email;
     private String senha;
     private String conta_instagram;
-    private String foto_perfil;
+    @JsonIgnore // será ignorado no JSON
+    @Column(length = 20_000_000) // 20MB
+    private byte[] foto_perfil;
     private String uf;
     @Transient
     private Integer idade;
     private String sobre;
 
-    public Tatuador(Integer id_tatuador, String nome, String username, LocalDate data_nascimento, String cnpj, String cep, String logradouro, String numero_logradouro, String telefone, String email, String senha, String conta_instagram, String foto_perfil, String uf) {
+    public Tatuador(Integer id_tatuador, String nome, String username, LocalDate data_nascimento, String cnpj, String cep, String logradouro, String numero_logradouro, String telefone, String email, String senha, String conta_instagram, byte[] foto_perfil, String uf) {
         this.id_tatuador = id_tatuador;
         this.nome = nome;
         this.username = username;

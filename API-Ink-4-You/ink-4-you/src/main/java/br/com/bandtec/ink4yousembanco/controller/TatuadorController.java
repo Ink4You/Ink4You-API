@@ -12,6 +12,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -214,6 +215,37 @@ public class TatuadorController {
 
     }
 
+    @PatchMapping("/foto/{id}")
+    public ResponseEntity patchFoto(
+            @PathVariable int id,
+            @RequestParam MultipartFile foto
+    ) throws IOException {
+        if (repositoryTatuador.existsById(id)) {
+            Tatuador tatuador =
+                    repositoryTatuador.findById(id).get();
+
+            // recuperando o conteúdo do arquivo
+            byte[] novaFoto = foto.getBytes();
+
+            // recuperando o TIPO do arquivo
+            // ex: text/plain,  image/jpeg, document/msword
+            //foto.getContentType();
+
+            // recuperando o nome original do arquivo
+            // foto.getOriginalFilename();
+
+            // se fosse necessário tratar o conteúdo como texto
+            // String conteudo = new String(foto.getBytes());
+
+            tatuador.setFoto_perfil(novaFoto);
+
+            repositoryTatuador.save(tatuador);
+            return ResponseEntity.status(200).build();
+        } else {
+            return ResponseEntity.status(404).build();
+        }
+
+    }
 
 // Mantive este endpoint para caso a gente precise baixar csv novamente
     // Endpoint para gerar o relatorio em csv e fazer o download
