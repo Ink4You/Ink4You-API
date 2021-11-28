@@ -224,21 +224,8 @@ public class TatuadorController {
             Tatuador tatuador =
                     repositoryTatuador.findById(id).get();
 
-            // recuperando o conteúdo do arquivo
             byte[] novaFoto = foto.getBytes();
-
-            // recuperando o TIPO do arquivo
-            // ex: text/plain,  image/jpeg, document/msword
-            //foto.getContentType();
-
-            // recuperando o nome original do arquivo
-            // foto.getOriginalFilename();
-
-            // se fosse necessário tratar o conteúdo como texto
-            // String conteudo = new String(foto.getBytes());
-
             tatuador.setFoto_perfil(novaFoto);
-
             repositoryTatuador.save(tatuador);
             return ResponseEntity.status(200).build();
         } else {

@@ -19,6 +19,14 @@ public class Tatuagem {
     private String titulo;
     private String local_tatuagem;
     private String descricao;
-    private String src_imagem;
+    private byte[] src_imagem;
     private Integer id_tatuador;
+
+    public Tatuagem(Integer id_tatuagem, String titulo, String local_tatuagem, String descricao, Integer id_tatuador) {
+        this.id_tatuagem = id_tatuagem;
+        this.titulo = titulo;
+        this.local_tatuagem = local_tatuagem;
+        this.descricao = descricao;
+        this.id_tatuador = id_tatuador;
+    }
 }
