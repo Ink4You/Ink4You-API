@@ -137,27 +137,6 @@ public class TatuadorController {
         return ResponseEntity.ok().body(contaInstagram);
     }
 
-    @GetMapping("/instagram/buscar-fotos/{account}")
-    public ResponseEntity getInstagramImages(@PathVariable String account) {
-
-
-        List<String> instagramImagesSrc = new ArrayList<>();
-        ResponseWebScraper response = null;
-        try {
-            RestTemplate restTemplate = new RestTemplate();
-            response = restTemplate.getForObject(String.format("http://localhost:3000/insta/%s",account), ResponseWebScraper.class);
-        } catch(Exception err) {
-            return ResponseEntity.status(503).build();
-        }
-
-        if(response.getData().isEmpty()) {
-            return ResponseEntity.status(204).body(response);
-        }
-
-        return ResponseEntity.ok().body(response);
-
-    }
-
     // Endpoint para gerar o arquivo no projeto
     @GetMapping("/relatorio-tatuadores")
     public ResponseEntity gravaArquivoTxt() {
@@ -218,14 +197,14 @@ public class TatuadorController {
     @PatchMapping("/foto/{id}")
     public ResponseEntity patchFoto(
             @PathVariable int id,
-            @RequestParam MultipartFile foto
+            @RequestBody byte[] foto
     ) throws IOException {
         if (repositoryTatuador.existsById(id)) {
             Tatuador tatuador =
                     repositoryTatuador.findById(id).get();
 
             // recuperando o conteúdo do arquivo
-            byte[] novaFoto = foto.getBytes();
+            byte[] novaFoto = foto;
 
             // recuperando o TIPO do arquivo
             // ex: text/plain,  image/jpeg, document/msword

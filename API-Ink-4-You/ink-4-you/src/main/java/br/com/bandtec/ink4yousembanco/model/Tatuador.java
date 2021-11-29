@@ -37,7 +37,6 @@ public class Tatuador {
     private String email;
     private String senha;
     private String conta_instagram;
-    @JsonIgnore // será ignorado no JSON
     @Column(length = 20_000_000) // 20MB
     private byte[] foto_perfil;
     private String uf;
