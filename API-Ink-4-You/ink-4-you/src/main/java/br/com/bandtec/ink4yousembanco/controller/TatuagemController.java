@@ -43,6 +43,20 @@ public class TatuagemController {
     }
 
 
+    // Buscar tatuagens por id de tatuador
+    @GetMapping("/tatuador/{id}")
+    public ResponseEntity findByIdTatuadorFotos(@PathVariable Integer id){
+
+        List<Tatuagem> tatuagens = repository.findByIdTatuador(id);
+
+        if (!tatuagens.isEmpty()){
+            return ResponseEntity.status(200).body(tatuagens);
+        }
+
+        return ResponseEntity.status(204).build();
+    }
+
+
     // adicionar uma nova tatuagem ao banco
     @PostMapping
     public ResponseEntity adicionarTatuagem(@RequestBody Tatuagem tatuagem){
