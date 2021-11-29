@@ -33,7 +33,7 @@ public class EstiloTatuadorController {
         List<EstiloTatuador> estilos = repository.findAll();
         for(int x =0; x < estilos.size(); x++){
             if(estilos.get(x).getId_tatuador().equals(id_tatuador)){
-                deletaEstiloUsuario(x);
+                deletaEstiloUsuario(estilos.get(x).getId());
             }
         }
 
