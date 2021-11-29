@@ -58,7 +58,6 @@ public class TatuagemController {
         if (repository.existsById(id)) {
             Tatuagem tatuagem =
                     repository.findById(id).get();
-
             byte[] novaFoto = foto.getBytes();
             tatuagem.setSrc_imagem(novaFoto);
             repository.save(tatuagem);
