@@ -28,11 +28,32 @@ public class EstiloTatuadorController {
     @Autowired
     private TatuadorRepository tatuadorRepository;
 
-    @PostMapping("/")
-    public ResponseEntity adicionarEstiloTatuador(@RequestBody EstiloTatuador estilo){
-        repository.save(estilo);
+    @PostMapping("/atualiza-estilos/{id_tatuador}")
+    public ResponseEntity adicionarEstiloTatuador(@RequestParam Integer id_tatuador, @RequestBody List<Integer> id_estilos ){
+        List<EstiloTatuador> estilos = repository.findAll();
+        for(int x =0; x < estilos.size(); x++){
+            if(estilos.get(x).getId_tatuador().equals(id_tatuador)){
+                deletaEstiloUsuario(estilos.get(x).getId());
+            }
+        }
+
+        for(int x =0; x < id_estilos.size(); x++){
+            EstiloTatuador estiloTatuador = new EstiloTatuador(id_tatuador, id_estilos.get(x));
+            repository.save(estiloTatuador);
+        }
         return ResponseEntity.status(201).build();
     }
+
+    @DeleteMapping(path ={"/{id}"})
+    public ResponseEntity <?> deletaEstiloUsuario(@PathVariable Integer id) {
+        return repository.findById(id)
+                .map(record -> {
+                    repository.deleteById(id);
+                    return ResponseEntity.ok().build();
+                }).orElse(ResponseEntity.notFound().build());
+    }
+
+
     @GetMapping("/")
     public ResponseEntity findAllEstiloTatuador(){
         List<EstiloTatuador> lista = repository.findAll();

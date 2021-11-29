@@ -17,4 +17,6 @@ public class EstiloTatuador {
     private Integer id_estilo;
     private Integer id_tatuador;
 
+    public EstiloTatuador(Integer id_tatuador, Integer integer) {
+    }
 }
