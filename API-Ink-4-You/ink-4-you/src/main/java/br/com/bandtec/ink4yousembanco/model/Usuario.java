@@ -27,11 +27,11 @@ public class Usuario {
     private String telefone;
     private String email;
     private String senha;
-    private String foto_perfil;
+    private byte[] foto_perfil;
     @Transient
     private Integer idade;
 
-    public Usuario(Integer id_usuario, String nome, LocalDate data_nascimento, String cpf, String cep, String telefone, String email, String senha, String foto_perfil) {
+    public Usuario(Integer id_usuario, String nome, LocalDate data_nascimento, String cpf, String cep, String telefone, String email, String senha, byte[] foto_perfil) {
         this.id_usuario = id_usuario;
         this.nome = nome;
         this.data_nascimento = data_nascimento;

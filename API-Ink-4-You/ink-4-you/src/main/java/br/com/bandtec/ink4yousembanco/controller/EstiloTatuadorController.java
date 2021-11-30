@@ -45,12 +45,14 @@ public class EstiloTatuadorController {
         return ResponseEntity.status(201).build();
     }
 
-    public ResponseEntity <?> deletaEstiloUsuario(Integer id) {
-        return repository.findById(id)
-                .map(record -> {
-                    repository.deleteById(id);
-                    return ResponseEntity.ok().build();
-                }).orElse(ResponseEntity.notFound().build());
+    @DeleteMapping(path ={"/{id}"})
+    public ResponseEntity <?> deletaEstiloUsuario(@PathVariable Integer id) {
+        if (repository.existsById(id)){
+            repository.deleteById(id);
+            return ResponseEntity.status(200).build();
+        }
+
+        return ResponseEntity.status(404).build();
     }
 
 
@@ -105,5 +107,9 @@ public class EstiloTatuadorController {
         return ResponseEntity.status(200).body(estiloTatuador);
     }
 
+<<<<<<< HEAD
+}
+=======
 
 }
+>>>>>>> master

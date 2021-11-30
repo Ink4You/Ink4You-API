@@ -26,14 +26,15 @@ public class RelatoController {
         return ResponseEntity.status(201).build();
     }
 
+
     // Endpoint para deletar o relato por id
     @DeleteMapping(path ={"/{id}"})
     public ResponseEntity<?> deleteRelato(@PathVariable Integer id) {
-        return repositoryRelato.findById(id)
-                .map(record -> {
-                    repositoryRelato.deleteById(id);
-                    return ResponseEntity.ok().build();
-                }).orElse(ResponseEntity.notFound().build());
+        if (repositoryRelato.existsById(id)){
+            repositoryRelato.deleteById(id);
+            return ResponseEntity.status(200).build();
+        }
+        return ResponseEntity.status(404).build();
     }
 
 
@@ -41,12 +42,14 @@ public class RelatoController {
     public ResponseEntity<?> buscarRelato(){
         List<Relato> relatos = repositoryRelato.findAll();
 
-        if(relatos.size() < 7){
-            return ResponseEntity.status(200).body(relatos);
-        }
+        if (!relatos.isEmpty()){
+
+            if(relatos.size() < 7){
+                return ResponseEntity.status(200).body(relatos);
+            }
 
 
-        PilhaObj<Relato> ultimosRegistrosPilha = new PilhaObj<>(relatos.size());
+            PilhaObj<Relato> ultimosRegistrosPilha = new PilhaObj<>(relatos.size());
 
 
             for (Integer i = relatos.size() - 1; i > relatos.size() - 7; i--){
@@ -54,7 +57,11 @@ public class RelatoController {
             }
 
 
-        return ResponseEntity.status(200).body(ultimosRegistrosPilha);
+            return ResponseEntity.status(200).body(ultimosRegistrosPilha);
+
+        }
+
+        return ResponseEntity.status(204).build();
 
     }
 }
