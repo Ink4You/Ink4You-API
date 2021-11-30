@@ -29,17 +29,18 @@ public class EstiloTatuadorController {
     private TatuadorRepository tatuadorRepository;
 
     @PostMapping("/atualiza-estilos/{id_tatuador}")
-    public ResponseEntity adicionarEstiloTatuador(@RequestParam Integer id_tatuador, @RequestBody List<Integer> id_estilos ){
+    public ResponseEntity adicionarEstiloTatuador(@PathVariable Integer id_tatuador, @RequestBody List<Integer> id_estilos ){
         List<EstiloTatuador> estilos = repository.findAll();
-        for(int x =0; x < estilos.size(); x++){
-            if(estilos.get(x).getId_tatuador().equals(id_tatuador)){
-                deletaEstiloUsuario(estilos.get(x).getId());
+        for(int x = 0; x < estilos.size(); x++){
+            if(estilos.get(x).getId_tatuador() != null){
+                if(estilos.get(x).getId_tatuador().equals(id_tatuador)) {
+                    deletaEstiloUsuario(estilos.get(x).getId());
+                }
             }
         }
 
-        for(int x =0; x < id_estilos.size(); x++){
-            EstiloTatuador estiloTatuador = new EstiloTatuador(id_tatuador, id_estilos.get(x));
-            repository.save(estiloTatuador);
+        for(Integer estiloFor: id_estilos){
+            repository.save(new EstiloTatuador(id_tatuador, estiloFor));
         }
         return ResponseEntity.status(201).build();
     }
@@ -76,7 +77,7 @@ public class EstiloTatuadorController {
 
         for(Integer idEstilo : idEstilos){
             Optional<Estilo> estilo = estiloRepository.findById(idEstilo);
-            if(estilo != null) estiloTatuador.add(estilo);
+            estiloTatuador.add(estilo);
         }
 
         if(estiloTatuador.isEmpty()) return ResponseEntity.status(204).build();
@@ -106,4 +107,9 @@ public class EstiloTatuadorController {
         return ResponseEntity.status(200).body(estiloTatuador);
     }
 
+<<<<<<< HEAD
 }
+=======
+
+}
+>>>>>>> master
