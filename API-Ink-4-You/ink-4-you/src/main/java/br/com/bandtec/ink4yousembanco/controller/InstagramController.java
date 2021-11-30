@@ -28,7 +28,11 @@ public class InstagramController {
     @GetMapping
     public ResponseEntity getImages() {
         List<Instagram> instagramImages = repositoryInstagram.findAll();
-        return ResponseEntity.ok().body(instagramImages);
+
+        if (!instagramImages.isEmpty()){
+            return ResponseEntity.status(200).body(instagramImages);
+        }
+        return ResponseEntity.status(204).build();
     }
 
     @GetMapping("/{id_tatuador}")

@@ -17,21 +17,19 @@ import java.util.List;
 @RequestMapping("/tatuagens")
 public class TatuagemController {
 
-
     @Autowired
     private TatuagemRepository repository;
 
 
     // Buscar todas as tatuagens
     @GetMapping
-    public ResponseEntity findTatuagens(){
+    public ResponseEntity findAllTatuagens(){
         List<Tatuagem> tatuagens = repository.findAll();
 
         if (!tatuagens.isEmpty()){
             return ResponseEntity.status(200).body(tatuagens);
-
         }
-        return ResponseEntity.status(401).build();
+        return ResponseEntity.status(204).build();
     }
 
     // Buscar tatuagem por id
@@ -80,6 +78,7 @@ public class TatuagemController {
             return ResponseEntity.status(404).build();
         }
     }
+
 
     // Alterar uma tatuagem existente por id
     @PutMapping(value="/{id}")

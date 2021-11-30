@@ -30,10 +30,10 @@ public class TatuadorController {
 
     // Endpoint de busca de Tatuadores (Todos)
     @GetMapping
-    public ResponseEntity findTatuadores(){
+    public ResponseEntity findAllTatuadores(){
         List<Tatuador> tatuadores = repositoryTatuador.findAll();
         LocalDate now = LocalDate.now();
-        if (tatuadores != null){
+        if (!tatuadores.isEmpty()){
             for (int i = 0; i < tatuadores.size(); i++){
 
                 LocalDate nascimento =  tatuadores.get(i).getData_nascimento();
@@ -45,7 +45,7 @@ public class TatuadorController {
             }
             return ResponseEntity.status(200).body(tatuadores);
         }
-        return ResponseEntity.status(401).build();
+        return ResponseEntity.status(204).build();
     }
 
 
@@ -121,7 +121,7 @@ public class TatuadorController {
     }
 
     @GetMapping("/conexao/instagram")
-    public ResponseEntity getUsuariosInstagram(){
+    public ResponseEntity getTatuadoresInstagram(){
         List<String> contaInstagram = new ArrayList<>();
 
         List<Tatuador> tatuadores = repositoryTatuador.findAll();
