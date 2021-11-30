@@ -71,7 +71,7 @@ public class TatuadorController {
     // EndPoint de alteração de dados do Tatuador
     @PutMapping(value="/{id}")
     public ResponseEntity updateTatuador(@PathVariable("id") Integer id,
-                                 @RequestBody Tatuador tatuador) {
+                                         @RequestBody Tatuador tatuador) {
         return repositoryTatuador.findById(id)
                 .map(record -> {
                     record.setNome(tatuador.getNome());
@@ -197,16 +197,16 @@ public class TatuadorController {
     @PatchMapping("/foto/{id}")
     public ResponseEntity patchFoto(
             @PathVariable int id,
-            @RequestBody byte[] foto
+            @RequestBody MultipartFile file
     ) throws IOException {
         if (repositoryTatuador.existsById(id)) {
             Tatuador tatuador =
                     repositoryTatuador.findById(id).get();
 
-
-            tatuador.setFoto_perfil(foto);
+            byte[] bytes = file.getBytes();
+            tatuador.setFoto_perfil(bytes);
             repositoryTatuador.save(tatuador);
-            return ResponseEntity.status(200).build();
+            return ResponseEntity.status(200).body(bytes);
         } else {
             return ResponseEntity.status(404).build();
         }
