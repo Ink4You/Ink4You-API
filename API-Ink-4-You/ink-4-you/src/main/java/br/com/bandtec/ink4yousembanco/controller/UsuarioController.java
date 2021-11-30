@@ -1,16 +1,11 @@
 package br.com.bandtec.ink4yousembanco.controller;
 
-import br.com.bandtec.ink4yousembanco.model.Tatuador;
 import br.com.bandtec.ink4yousembanco.model.Usuario;
 import br.com.bandtec.ink4yousembanco.repository.UsuarioRepository;
-import br.com.bandtec.ink4yousembanco.uteis.CsvAdapter;
-import br.com.bandtec.ink4yousembanco.uteis.ListaObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
@@ -25,6 +20,7 @@ public class UsuarioController {
     private UsuarioRepository repositoryUsuario;
 
     // métodos do CRUD de usuário:
+
 
     // Endpoint de busca de Usuarios (Todos)
     @GetMapping
@@ -114,24 +110,5 @@ public class UsuarioController {
         return ResponseEntity.status(401).build();
 
     }
-
-
-    // Endpoint para gerar o relatorio em csv e fazer o download
-//    @GetMapping("/relatorio-usuarios.csv")
-//    public void getCsvUsuario(HttpServletResponse response) throws IOException {
-//
-//        List<Usuario> listaJava = repositoryUsuario.findAll();
-//
-//        ListaObj<Usuario> lista = new ListaObj<>(listaJava.size());
-//
-//        for (int i = 0; i < repositoryUsuario.count(); i++) {
-//            lista.adicionar(listaJava.get(i));
-//        }
-//
-//        response.setContentType("text/csv");
-//        CsvAdapter.downloadCsvUsuario(response.getWriter(), lista);
-//        response.setStatus(200);
-//
-//    }
 
 }

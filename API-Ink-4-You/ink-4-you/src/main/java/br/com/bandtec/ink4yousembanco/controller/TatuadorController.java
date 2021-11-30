@@ -2,19 +2,16 @@ package br.com.bandtec.ink4yousembanco.controller;
 
 import br.com.bandtec.ink4yousembanco.model.Tatuador;
 import br.com.bandtec.ink4yousembanco.repository.TatuadorRepository;
-import br.com.bandtec.ink4yousembanco.uteis.CsvAdapter;
-import br.com.bandtec.ink4yousembanco.uteis.FilaObj;
+import br.com.bandtec.ink4yousembanco.uteis.TxtAdapter;
 import br.com.bandtec.ink4yousembanco.uteis.ListaObj;
-import br.com.bandtec.ink4yousembanco.uteis.ResponseWebScraper;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileFilter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -137,8 +134,8 @@ public class TatuadorController {
         return ResponseEntity.ok().body(contaInstagram);
     }
 
-    // Endpoint para gerar o arquivo no projeto
-    @GetMapping("/relatorio-tatuadores")
+    // Endpoint para gerar o arquivo no projeto (Import)
+    @GetMapping("/import-tatuadores")
     public ResponseEntity gravaArquivoTxt() {
 
         List<Tatuador> tatuadors = repositoryTatuador.findAll();
@@ -155,7 +152,7 @@ public class TatuadorController {
             header += "01";
 
             // Grava o header
-            CsvAdapter.gravaRegistro(header, "arquivo");
+            TxtAdapter.gravaRegistro(header, "tatuadores.txt");
 
 
             for (Tatuador t : tatuadors){
@@ -177,14 +174,14 @@ public class TatuadorController {
                 // Incrementa o contador de registro de dados
                 contaRegDados++;
                 // Grava o registro de corpo no arquivo
-                CsvAdapter.gravaRegistro(corpo, "arquivo");
+                TxtAdapter.gravaRegistro(corpo, "tatuadores.txt");
 
             }
 
             // Monta e grava o registro de trailer
             String trailer = "01";
             trailer += String.format("%010d", contaRegDados);   // contador de registros de dados
-            CsvAdapter.gravaRegistro(trailer, "arquivo");
+            TxtAdapter.gravaRegistro(trailer, "tatuadores.txt");
 
             return ResponseEntity.status(201).build();
 
@@ -194,6 +191,27 @@ public class TatuadorController {
 
     }
 
+
+    // Endpoint para fazer o export do TXT de tatuadores
+    @GetMapping("/export-tatuadores")
+    public void getTatuadoresTxt(HttpServletResponse response) throws IOException {
+
+        List<Tatuador> listaJava = repositoryTatuador.findAll();
+
+        ListaObj<Tatuador> lista = new ListaObj<>(listaJava.size());
+
+        for (int i = 0; i < repositoryTatuador.count(); i++) {
+            lista.adicionar(listaJava.get(i));
+        }
+
+        TxtAdapter.downloadTxtTatuador(response.getWriter(), lista);
+        response.setHeader("Content-Disposition", "attachment; filename=" + "tatuadores.txt");
+        response.setStatus(200);
+    }
+
+
+
+    // Endpoint para fazer o upload de fotos
     @PatchMapping("/foto/{id}")
     public ResponseEntity patchFoto(
             @PathVariable int id,
@@ -212,24 +230,5 @@ public class TatuadorController {
         }
 
     }
-
-// Mantive este endpoint para caso a gente precise baixar csv novamente
-    // Endpoint para gerar o relatorio em csv e fazer o download
-//    @GetMapping("/relatorio-tatuadores.csv")
-//    public void getCsvTatuador(HttpServletResponse response) throws IOException {
-//
-//        List<Tatuador> listaJava = repositoryTatuador.findAll();
-//
-//        ListaObj<Tatuador> lista = new ListaObj<>(listaJava.size());
-//
-//        for (int i = 0; i < repositoryTatuador.count(); i++) {
-//            lista.adicionar(listaJava.get(i));
-//        }
-//
-//        response.setContentType("text/csv");
-//        CsvAdapter.downloadCsvTatuador(response.getWriter(), lista);
-//        response.setStatus(200);
-//
-//    }
 
 }
