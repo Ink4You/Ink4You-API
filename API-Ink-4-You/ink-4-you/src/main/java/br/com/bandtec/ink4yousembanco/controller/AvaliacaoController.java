@@ -50,7 +50,7 @@ public class AvaliacaoController {
             mediaCalculada+= somaMedia;
         }
 
-        if (media.size() == 0) return ResponseEntity.status(404).build();
+        if (media.size() == 0) return ResponseEntity.status(200).body(0);
         return ResponseEntity.status(200).body(mediaCalculada / media.size());
     }
 }

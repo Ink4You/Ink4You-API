@@ -17,6 +17,8 @@ public class EstiloTatuador {
     private Integer id_estilo;
     private Integer id_tatuador;
 
-    public EstiloTatuador(Integer id_tatuador, Integer integer) {
+    public EstiloTatuador(Integer id_tatuador, Integer id_estilo) {
+        this.id_tatuador = id_tatuador;
+        this.id_estilo = id_estilo;
     }
 }
