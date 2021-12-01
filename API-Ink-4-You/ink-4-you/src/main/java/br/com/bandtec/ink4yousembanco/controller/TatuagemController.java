@@ -6,6 +6,7 @@ import br.com.bandtec.ink4yousembanco.repository.TatuadorRepository;
 import br.com.bandtec.ink4yousembanco.repository.TatuagemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -57,7 +58,9 @@ public class TatuagemController {
 
     // adicionar uma nova tatuagem ao banco
     @PostMapping
-    public ResponseEntity adicionarTatuagem(@RequestBody Tatuagem tatuagem){
+    public ResponseEntity adicionarTatuagem(@RequestBody Tatuagem tatuagem, @RequestParam MultipartFile foto) throws IOException {
+        byte[] novaFoto = foto.getBytes();
+        tatuagem.setSrc_imagem(novaFoto);
         repository.save(tatuagem);
         return ResponseEntity.status(201).body(tatuagem);
     }
