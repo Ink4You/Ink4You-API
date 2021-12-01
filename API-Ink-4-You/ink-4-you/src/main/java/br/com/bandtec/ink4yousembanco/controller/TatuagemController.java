@@ -62,6 +62,18 @@ public class TatuagemController {
         return ResponseEntity.status(201).body(tatuagem);
     }
 
+
+    // Endpoint para deletar uma tatuagem por id
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteTatuagem(@PathVariable Integer id){
+        if (repository.existsById(id)){
+            repository.deleteById(id);
+            return ResponseEntity.status(200).build();
+        }
+        return ResponseEntity.status(404).build();
+    }
+
+
     @PatchMapping("/foto/{id}")
     public ResponseEntity patchFoto(
             @PathVariable int id,
