@@ -1,11 +1,14 @@
 package br.com.bandtec.ink4yousembanco.controller;
 
+import br.com.bandtec.ink4yousembanco.model.Tatuagem;
 import br.com.bandtec.ink4yousembanco.model.Usuario;
 import br.com.bandtec.ink4yousembanco.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
@@ -24,11 +27,11 @@ public class UsuarioController {
 
     // Endpoint de busca de Usuarios (Todos)
     @GetMapping
-    public ResponseEntity findUsuarios(){
+    public ResponseEntity findAllUsuarios(){
         List<Usuario> usuarios = repositoryUsuario.findAll();
         LocalDate now = LocalDate.now();
 
-        if (usuarios != null){
+        if (!usuarios.isEmpty()){
             for (int i = 0; i < usuarios.size(); i++){
 
                 LocalDate nascimento =  usuarios.get(i).getData_nascimento();
@@ -40,13 +43,13 @@ public class UsuarioController {
             }
             return ResponseEntity.status(200).body(usuarios);
         }
-        return ResponseEntity.status(401).build();
+        return ResponseEntity.status(204).build();
     }
 
 
     // Endpoint de busca de usuario por ID
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity findByIdCliente(@PathVariable Integer id){
+    public ResponseEntity findByIdUsuario(@PathVariable Integer id){
         return repositoryUsuario.findById(id)
                 .map(record -> ResponseEntity.ok().body(record))
                 .orElse(ResponseEntity.notFound().build());
@@ -94,7 +97,7 @@ public class UsuarioController {
 
     // Endpoint de login (autenticação) do usuario
     @GetMapping("/login/{email}/{senha}")
-    public ResponseEntity autenticacaoTatuador(@PathVariable String email, @PathVariable String senha){
+    public ResponseEntity autenticacaoUsuario(@PathVariable String email, @PathVariable String senha){
 
         Usuario autendicado =  repositoryUsuario.findByEmailAndSenha(email, senha);
 
@@ -109,6 +112,22 @@ public class UsuarioController {
 
         return ResponseEntity.status(401).build();
 
+    }
+
+    @PatchMapping("/foto/{id}")
+    public ResponseEntity patchFoto(
+            @PathVariable int id,
+            @RequestParam MultipartFile foto
+    ) throws IOException {
+        if (repositoryUsuario.existsById(id)) {
+            Usuario user = repositoryUsuario.findById(id).get();
+            byte[] novaFoto = foto.getBytes();
+            user.setFoto_perfil(novaFoto);
+            repositoryUsuario.save(user);
+            return ResponseEntity.status(200).build();
+        } else {
+            return ResponseEntity.status(404).build();
+        }
     }
 
 }
