@@ -57,7 +57,7 @@ public class TatuagemController {
 
     // adicionar uma nova tatuagem ao banco
     @PostMapping
-    public ResponseEntity adicionarTatuagem(@RequestBody Tatuagem tatuagem){
+    public ResponseEntity adicionarTatuagem(@RequestBody Tatuagem tatuagem) {
         repository.save(tatuagem);
         return ResponseEntity.status(201).body(tatuagem);
     }
@@ -65,12 +65,12 @@ public class TatuagemController {
     @PatchMapping("/foto/{id}")
     public ResponseEntity patchFoto(
             @PathVariable int id,
-            @RequestParam MultipartFile foto
+            @RequestBody MultipartFile file
     ) throws IOException {
         if (repository.existsById(id)) {
             Tatuagem tatuagem =
                     repository.findById(id).get();
-            byte[] novaFoto = foto.getBytes();
+            byte[] novaFoto = file.getBytes();
             tatuagem.setSrc_imagem(novaFoto);
             repository.save(tatuagem);
             return ResponseEntity.status(200).build();
