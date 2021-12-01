@@ -6,6 +6,7 @@ import br.com.bandtec.ink4yousembanco.model.Tatuador;
 import br.com.bandtec.ink4yousembanco.repository.EstiloRepository;
 import br.com.bandtec.ink4yousembanco.repository.EstiloTatuadorRepository;
 import br.com.bandtec.ink4yousembanco.repository.TatuadorRepository;
+import br.com.bandtec.ink4yousembanco.uteis.FilaObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,12 @@ public class EstiloTatuadorController {
     @PostMapping("/atualiza-estilos/{id_tatuador}")
     public ResponseEntity adicionarEstiloTatuador(@PathVariable Integer id_tatuador, @RequestBody List<Integer> id_estilos ){
         List<EstiloTatuador> estilos = repository.findAll();
+
+        FilaObj<Integer> fila = new FilaObj(id_estilos.size());
+        for(int x = 0 ; x < id_estilos.size(); x++){
+            fila.insert(id_estilos.get(x));
+        }
+
         for(int x = 0; x < estilos.size(); x++){
             if(estilos.get(x).getId_tatuador() != null){
                 if(estilos.get(x).getId_tatuador().equals(id_tatuador)) {
@@ -39,8 +46,9 @@ public class EstiloTatuadorController {
             }
         }
 
-        for(Integer estiloFor: id_estilos){
-            repository.save(new EstiloTatuador(id_tatuador, estiloFor));
+        for(int x =0; x < id_estilos.size() ; x++){
+            EstiloTatuador estiloTatuador = new EstiloTatuador(id_tatuador, fila.poll());
+            repository.save(estiloTatuador);
         }
         return ResponseEntity.status(201).build();
     }
