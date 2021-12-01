@@ -107,9 +107,6 @@ public class EstiloTatuadorController {
         return ResponseEntity.status(200).body(estiloTatuador);
     }
 
-<<<<<<< HEAD
 }
-=======
 
-}
->>>>>>> master
+
