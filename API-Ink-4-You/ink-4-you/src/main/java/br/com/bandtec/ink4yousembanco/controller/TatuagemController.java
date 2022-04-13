@@ -5,6 +5,7 @@ import br.com.bandtec.ink4yousembanco.model.Tatuagem;
 import br.com.bandtec.ink4yousembanco.repository.TatuadorRepository;
 import br.com.bandtec.ink4yousembanco.repository.TatuagemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,6 +33,14 @@ public class TatuagemController {
         return ResponseEntity.status(204).build();
     }
 
+    @GetMapping("/limit/{quantidade}")
+    public ResponseEntity findTopTatuagens(@PathVariable Integer quantidade){
+        List<Tatuagem> tatuagens = repository.findLimit(quantidade);
+        if (!tatuagens.isEmpty()){
+            return ResponseEntity.status(200).body(tatuagens);
+        }
+        return ResponseEntity.status(204).build();
+    }
     // Buscar tatuagem por id
     @GetMapping(path = {"/{id}"})
     public ResponseEntity findByIdTatuagem(@PathVariable Integer id){
@@ -107,5 +116,7 @@ public class TatuagemController {
                     return ResponseEntity.ok().body(update);
                 }).orElse(ResponseEntity.notFound().build());
     }
+
+
 
 }
