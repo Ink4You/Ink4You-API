@@ -57,6 +57,11 @@ public class TatuadorController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/last")
+    public ResponseEntity findLastTatuador(){
+        List<Tatuador> lastTatuadores = repositoryTatuador.findLast();
+        return ResponseEntity.ok().body(lastTatuadores);
+    }
 
     // POST de cadastro de Tatuador
     @PostMapping("/cadastro-tatuador")
