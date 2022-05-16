@@ -17,5 +17,5 @@ public class Estilo {
     private Integer id_estilo;
     private String titulo;
     private String descricao;
-
+    private String img_estilo;
 }
