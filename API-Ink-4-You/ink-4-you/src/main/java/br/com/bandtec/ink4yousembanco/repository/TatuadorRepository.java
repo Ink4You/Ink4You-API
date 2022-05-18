@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TatuadorRepository extends JpaRepository<Tatuador, Integer> {
     Tatuador findByEmailAndSenha(String email, String senha);
+
 }

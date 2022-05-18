@@ -62,4 +62,12 @@ public class Tatuador {
         this.idade = 0;
         this.sobre = "";
     }
+
+    public byte[] getFoto_perfil() {
+        if(foto_perfil != null){
+            return foto_perfil;
+        }
+        byte[] bytes = new byte[0];
+        return bytes;
+    }
 }

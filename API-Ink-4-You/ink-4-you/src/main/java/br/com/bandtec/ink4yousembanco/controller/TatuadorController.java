@@ -56,8 +56,6 @@ public class TatuadorController {
                 .map(record -> ResponseEntity.ok().body(record))
                 .orElse(ResponseEntity.notFound().build());
     }
-
-
     // POST de cadastro de Tatuador
     @PostMapping("/cadastro-tatuador")
     public ResponseEntity cadastroTatuador(@RequestBody Tatuador tatuador){

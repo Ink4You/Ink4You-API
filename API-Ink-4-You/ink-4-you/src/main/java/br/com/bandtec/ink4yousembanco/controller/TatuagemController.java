@@ -4,13 +4,16 @@ import br.com.bandtec.ink4yousembanco.model.Tatuador;
 import br.com.bandtec.ink4yousembanco.model.Tatuagem;
 import br.com.bandtec.ink4yousembanco.repository.TatuadorRepository;
 import br.com.bandtec.ink4yousembanco.repository.TatuagemRepository;
+import br.com.bandtec.ink4yousembanco.response.FindByQttdResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
@@ -19,7 +22,8 @@ public class TatuagemController {
 
     @Autowired
     private TatuagemRepository repository;
-
+    @Autowired
+    private TatuadorRepository tatuadorRepository;
 
     // Buscar todas as tatuagens
     @GetMapping
@@ -32,8 +36,30 @@ public class TatuagemController {
         return ResponseEntity.status(204).build();
     }
 
+    @GetMapping("qttd/{qttd}")
+    public ResponseEntity findByQttd(@PathVariable Integer qttd){
+        List<Tatuagem> tatuagem = repository.findAll();
+        List<FindByQttdResponse> result = new ArrayList<>();
+
+        for(int i = 0; i < qttd; i++){
+           Tatuagem tatto = tatuagem.get(i);
+           Optional<Tatuador> tatuador = tatuadorRepository.findById(tatto.getId_tatuador());
+                FindByQttdResponse resultado = new FindByQttdResponse(
+                        tatto.getId_tatuagem(),
+                        tatto.getTitulo(),
+                        tatto.getSrc_imagem(),
+                        tatuador.get().getId_tatuador(),
+                        tatuador.get().getNome(),
+                        tatuador.get().getUf(),
+                        tatuador.get().getFoto_perfil());
+                result.add(resultado);
+
+
+        }
+     return ResponseEntity.status(200).body(result);
+    }
     // Buscar tatuagem por id
-    @GetMapping(path = {"/{id}"})
+    @GetMapping(path = {"{id}"})
     public ResponseEntity findByIdTatuagem(@PathVariable Integer id){
         return repository.findById(id)
                 .map(record -> ResponseEntity.ok().body(record))
@@ -107,5 +133,4 @@ public class TatuagemController {
                     return ResponseEntity.ok().body(update);
                 }).orElse(ResponseEntity.notFound().build());
     }
-
 }
