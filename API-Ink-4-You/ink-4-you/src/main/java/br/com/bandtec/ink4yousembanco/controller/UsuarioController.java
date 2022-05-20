@@ -114,20 +114,20 @@ public class UsuarioController {
 
     }
 
-    @PatchMapping("/foto/{id}")
-    public ResponseEntity patchFoto(
-            @PathVariable int id,
-            @RequestParam MultipartFile foto
-    ) throws IOException {
-        if (repositoryUsuario.existsById(id)) {
-            Usuario user = repositoryUsuario.findById(id).get();
-            byte[] novaFoto = foto.getBytes();
-            user.setFoto_perfil(novaFoto);
-            repositoryUsuario.save(user);
-            return ResponseEntity.status(200).build();
-        } else {
-            return ResponseEntity.status(404).build();
-        }
-    }
+//    @PatchMapping("/foto/{id}")
+//    public ResponseEntity patchFoto(
+//            @PathVariable int id,
+//            @RequestParam MultipartFile foto
+//    ) throws IOException {
+//        if (repositoryUsuario.existsById(id)) {
+//            Usuario user = repositoryUsuario.findById(id).get();
+//            byte[] novaFoto = foto.getBytes();
+//            user.setFoto_perfil(novaFoto);
+//            repositoryUsuario.save(user);
+//            return ResponseEntity.status(200).build();
+//        } else {
+//            return ResponseEntity.status(404).build();
+//        }
+//    }
 
 }

@@ -18,5 +18,5 @@ public class FindByQttdResponse {
     int idTatuador = 0;
     String tatuadorNome = "";
     String tatuadorUf = "";
-    byte[] tatuadorFotoPerfil;
+    String tatuadorFotoPerfil;
 };

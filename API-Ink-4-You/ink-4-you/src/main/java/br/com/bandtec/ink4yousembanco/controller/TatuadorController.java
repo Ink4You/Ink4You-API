@@ -210,23 +210,23 @@ public class TatuadorController {
 
 
     // Endpoint para fazer o upload de fotos
-    @PatchMapping("/foto/{id}")
-    public ResponseEntity patchFoto(
-            @PathVariable int id,
-            @RequestBody MultipartFile file
-    ) throws IOException {
-        if (repositoryTatuador.existsById(id)) {
-            Tatuador tatuador =
-                    repositoryTatuador.findById(id).get();
-
-            byte[] bytes = file.getBytes();
-            tatuador.setFoto_perfil(bytes);
-            repositoryTatuador.save(tatuador);
-            return ResponseEntity.status(200).body(bytes);
-        } else {
-            return ResponseEntity.status(404).build();
-        }
-
-    }
+//    @PatchMapping("/foto/{id}")
+//    public ResponseEntity patchFoto(
+//            @PathVariable int id,
+//            @RequestBody MultipartFile file
+//    ) throws IOException {
+//        if (repositoryTatuador.existsById(id)) {
+//            Tatuador tatuador =
+//                    repositoryTatuador.findById(id).get();
+//
+//            byte[] bytes = file.getBytes();
+//            tatuador.setFoto_perfil(bytes);
+//            repositoryTatuador.save(tatuador);
+//            return ResponseEntity.status(200).body(bytes);
+//        } else {
+//            return ResponseEntity.status(404).build();
+//        }
+//
+//    }
 
 }

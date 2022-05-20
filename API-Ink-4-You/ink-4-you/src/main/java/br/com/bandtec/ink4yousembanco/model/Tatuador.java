@@ -38,13 +38,13 @@ public class Tatuador {
     private String senha;
     private String conta_instagram;
     @Column(length = 20_000_000) // 20MB
-    private byte[] foto_perfil;
+    private String foto_perfil;
     private String uf;
     @Transient
     private Integer idade;
     private String sobre;
 
-    public Tatuador(Integer id_tatuador, String nome, String username, LocalDate data_nascimento, String cnpj, String cep, String logradouro, String numero_logradouro, String telefone, String email, String senha, String conta_instagram, byte[] foto_perfil, String uf) {
+    public Tatuador(Integer id_tatuador, String nome, String username, LocalDate data_nascimento, String cnpj, String cep, String logradouro, String numero_logradouro, String telefone, String email, String senha, String conta_instagram, String foto_perfil, String uf) {
         this.id_tatuador = id_tatuador;
         this.nome = nome;
         this.username = username;
@@ -61,13 +61,5 @@ public class Tatuador {
         this.uf = uf;
         this.idade = 0;
         this.sobre = "";
-    }
-
-    public byte[] getFoto_perfil() {
-        if(foto_perfil != null){
-            return foto_perfil;
-        }
-        byte[] bytes = new byte[0];
-        return bytes;
     }
 }
