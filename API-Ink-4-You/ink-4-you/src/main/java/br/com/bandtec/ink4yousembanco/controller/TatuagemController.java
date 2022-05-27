@@ -99,23 +99,28 @@ public class TatuagemController {
         return ResponseEntity.status(404).build();
     }
 
-
-    @PatchMapping("/foto/{id}")
-    public ResponseEntity patchFoto(
-            @PathVariable int id,
-            @RequestBody MultipartFile file
-    ) throws IOException {
-        if (repository.existsById(id)) {
-            Tatuagem tatuagem =
-                    repository.findById(id).get();
-            byte[] novaFoto = file.getBytes();
-            tatuagem.setSrc_imagem(novaFoto);
-            repository.save(tatuagem);
-            return ResponseEntity.status(200).build();
-        } else {
-            return ResponseEntity.status(404).build();
-        }
+    @GetMapping("/estilo/{id}")
+    public ResponseEntity findByIdEstilo(@PathVariable Integer id){
+        List<Tatuagem> estilosTatuagem = repository.findByIdEstilo(id);
+        return ResponseEntity.status(200).body(estilosTatuagem);
     }
+
+//    @PatchMapping("/foto/{id}")
+//    public ResponseEntity patchFoto(
+//            @PathVariable int id,
+//            @RequestBody MultipartFile file
+//    ) throws IOException {
+//        if (repository.existsById(id)) {
+//            Tatuagem tatuagem =
+//                    repository.findById(id).get();
+//            byte[] novaFoto = file.getBytes();
+//            tatuagem.setSrc_imagem(novaFoto);
+//            repository.save(tatuagem);
+//            return ResponseEntity.status(200).build();
+//        } else {
+//            return ResponseEntity.status(404).build();
+//        }
+//    }
 
 
     // Alterar uma tatuagem existente por id

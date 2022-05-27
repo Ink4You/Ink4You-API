@@ -14,7 +14,7 @@ import java.util.List;
 public class FindByQttdResponse {
     Integer idTatuagem = 0;
     String tituloTatuagem = "";
-    byte[] srcImagem;
+    String srcImagem;
     int idTatuador = 0;
     String tatuadorNome = "";
     String tatuadorUf = "";
