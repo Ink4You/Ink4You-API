@@ -1,15 +1,13 @@
 package br.com.bandtec.ink4yousembanco.controller;
 
+import br.com.bandtec.ink4yousembanco.dto.CreateRequestEstiloDto;
 import br.com.bandtec.ink4yousembanco.model.Estilo;
 import br.com.bandtec.ink4yousembanco.model.Tatuagem;
 import br.com.bandtec.ink4yousembanco.repository.EstiloRepository;
 import br.com.bandtec.ink4yousembanco.repository.TatuagemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,6 +27,23 @@ public class EstiloController {
         List<Estilo> estiloLista = repository.findAll();
         if(estiloLista.isEmpty()) return ResponseEntity.status(404).build();
         return ResponseEntity.status(200).body(estiloLista);
+    }
+
+    @GetMapping("/idestilo-e-titulo")
+    public ResponseEntity getIdAndTitulo(){
+        List<Estilo> estiloLista = repository.findAll();
+        List<CreateRequestEstiloDto> estiloDtoLista = new ArrayList<>();
+
+        for (int i = 0; i < estiloLista.size(); i++){
+            CreateRequestEstiloDto estilo = new CreateRequestEstiloDto(estiloLista.get(i).getId_estilo(), estiloLista.get(i).getTitulo());
+            estiloDtoLista.add(estilo);
+        }
+
+        if (estiloDtoLista.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+
+        return ResponseEntity.status(200).body(estiloDtoLista);
     }
 
     @GetMapping("/populares")
