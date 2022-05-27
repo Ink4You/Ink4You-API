@@ -1,11 +1,27 @@
 package br.com.bandtec.ink4yousembanco.dto;
 
 public class CreateRequestEstiloDto {
-    private Integer id_estilo;
-    private String titulo;
+    private Integer idEstilo;
+    private String nomeEstilo;
 
-    public CreateRequestEstiloDto(Integer id_estilo, String titulo) {
-        this.id_estilo = id_estilo;
-        this.titulo = titulo;
+    public CreateRequestEstiloDto(Integer idEstilo, String nomeEstilo) {
+        this.idEstilo = idEstilo;
+        this.nomeEstilo = nomeEstilo;
+    }
+
+    public Integer getIdEstilo() {
+        return idEstilo;
+    }
+
+    public void setIdEstilo(Integer idEstilo) {
+        this.idEstilo = idEstilo;
+    }
+
+    public String getNomeEstilo() {
+        return nomeEstilo;
+    }
+
+    public void setNomeEstilo(String nomeEstilo) {
+        this.nomeEstilo = nomeEstilo;
     }
 }

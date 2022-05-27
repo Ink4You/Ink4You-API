@@ -29,7 +29,7 @@ public class EstiloController {
         return ResponseEntity.status(200).body(estiloLista);
     }
 
-    @GetMapping("/idestilo-e-titulo")
+    @GetMapping("/estilos-com-id")
     public ResponseEntity getIdAndTitulo(){
         List<Estilo> estiloLista = repository.findAll();
         List<CreateRequestEstiloDto> estiloDtoLista = new ArrayList<>();
