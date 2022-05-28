@@ -1,7 +1,9 @@
 package br.com.bandtec.ink4yousembanco.controller;
 
 import br.com.bandtec.ink4yousembanco.model.Tatuador;
+import br.com.bandtec.ink4yousembanco.model.Tatuagem;
 import br.com.bandtec.ink4yousembanco.repository.TatuadorRepository;
+import br.com.bandtec.ink4yousembanco.response.FindByQttdResponse;
 import br.com.bandtec.ink4yousembanco.uteis.TxtAdapter;
 import br.com.bandtec.ink4yousembanco.uteis.ListaObj;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +58,19 @@ public class TatuadorController {
                 .map(record -> ResponseEntity.ok().body(record))
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("qttd/{qttd}")
+    public ResponseEntity findByQttd(@PathVariable Integer qttd){
+        List<Tatuador> tatuadores = repositoryTatuador.findAll();
+        List<Tatuador> result = new ArrayList<>();
+
+        for(int i = 0; i < qttd; i++){
+            Tatuador tatuador = tatuadores.get(i);
+            result.add(tatuador);
+        }
+        return ResponseEntity.status(200).body(result);
+    }
+
     // POST de cadastro de Tatuador
     @PostMapping("/cadastro-tatuador")
     public ResponseEntity cadastroTatuador(@RequestBody Tatuador tatuador){
