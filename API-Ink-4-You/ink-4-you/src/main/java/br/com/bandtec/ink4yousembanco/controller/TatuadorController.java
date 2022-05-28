@@ -1,19 +1,15 @@
 package br.com.bandtec.ink4yousembanco.controller;
 
 import br.com.bandtec.ink4yousembanco.model.Tatuador;
-import br.com.bandtec.ink4yousembanco.model.Tatuagem;
 import br.com.bandtec.ink4yousembanco.repository.TatuadorRepository;
-import br.com.bandtec.ink4yousembanco.response.FindByQttdResponse;
+import br.com.bandtec.ink4yousembanco.uteis.PilhaObj;
 import br.com.bandtec.ink4yousembanco.uteis.TxtAdapter;
 import br.com.bandtec.ink4yousembanco.uteis.ListaObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileFilter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -59,16 +55,30 @@ public class TatuadorController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // Endpoint que busca os ultimos tatuadores inseridos no banco pela quantidade solicitada
     @GetMapping("qttd/{qttd}")
     public ResponseEntity findByQttd(@PathVariable Integer qttd){
         List<Tatuador> tatuadores = repositoryTatuador.findAll();
-        List<Tatuador> result = new ArrayList<>();
+        List<Tatuador> ultimosTatuadores = new ArrayList<>();
 
-        for(int i = 0; i < qttd; i++){
-            Tatuador tatuador = tatuadores.get(i);
-            result.add(tatuador);
+        if (!tatuadores.isEmpty()){
+            if (tatuadores.size() <= qttd){
+                return ResponseEntity.status(200).body(tatuadores);
+            }
+
+            PilhaObj<Tatuador> ultimosRegistrosPilha = new PilhaObj<>(tatuadores.size());
+
+            for (Integer i = tatuadores.size() - 1; i > tatuadores.size() - qttd - 1; i--){
+                ultimosRegistrosPilha.push(tatuadores.get(i));
+            }
+
+            for (Integer i = 0; i < qttd; i++){
+                ultimosTatuadores.add(ultimosRegistrosPilha.pop());
+            }
+
+            return ResponseEntity.status(200).body(ultimosTatuadores);
         }
-        return ResponseEntity.status(200).body(result);
+        return ResponseEntity.status(204).build();
     }
 
     // POST de cadastro de Tatuador
