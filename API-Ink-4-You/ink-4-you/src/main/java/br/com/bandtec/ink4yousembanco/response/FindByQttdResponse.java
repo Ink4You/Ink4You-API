@@ -12,11 +12,11 @@ import java.util.List;
 @Data
 
 public class FindByQttdResponse {
-    Integer idTatuagem = 0;
-    String tituloTatuagem = "";
-    String srcImagem;
-    int idTatuador = 0;
-    String tatuadorNome = "";
-    String tatuadorUf = "";
-    String tatuadorFotoPerfil;
+    Integer id_tatuagem = 0;
+    String titulo = "";
+    String src_imagem;
+    int id_tatuador = 0;
+    String nome = "";
+    String uf = "";
+    String foto_perfil = "";
 };
