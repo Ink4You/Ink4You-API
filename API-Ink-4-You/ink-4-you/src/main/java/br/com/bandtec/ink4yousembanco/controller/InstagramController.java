@@ -4,9 +4,15 @@ import br.com.bandtec.ink4yousembanco.model.Instagram;
 import br.com.bandtec.ink4yousembanco.model.Tatuador;
 import br.com.bandtec.ink4yousembanco.repository.InstagramRepository;
 import br.com.bandtec.ink4yousembanco.repository.TatuadorRepository;
+import br.com.bandtec.ink4yousembanco.uteis.ResponseImgur;
 import br.com.bandtec.ink4yousembanco.uteis.ResponseWebScraper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -74,7 +80,6 @@ public class InstagramController {
 
     @GetMapping("/atualizar-imagens/{idTatuador}")
     public ResponseEntity updateInstagramImages(@PathVariable Integer idTatuador) {
-        //System.out.println("teste");
         if (idTatuador <= 0) {
             ResponseEntity.status(404).build();
         } else {
@@ -86,28 +91,32 @@ public class InstagramController {
             if (response.getStatusCodeValue() != 200) {
                 return ResponseEntity.status(404).build();
             }
+            repositoryInstagram.deleteByIdTatuador(idTatuador);
 
             ResponseWebScraper responseBody = (ResponseWebScraper) response.getBody();
             images.addAll(responseBody.getData());
 
-            repositoryInstagram.deleteByIdTatuador(idTatuador);
 
             for (int i = 0; i < images.size(); i++) {
                 Instagram img = new Instagram();
                 img.setId_tatuador(idTatuador);
                 img.setImagem(images.get(i));
-
                 try {
                     URL url = new URL(img.getImagem());
                     InputStream in = new BufferedInputStream(url.openStream());
-                    OutputStream out = new BufferedOutputStream(new FileOutputStream("./src/main/resources/Image-Porkeri_00"+i+".jpg"));
 
                     byte[] foto = in.readAllBytes();
-
-                    img.setImagem_byte(foto);
-
+                    RestTemplate restTemplate = new RestTemplate();
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+                    headers.set("Authorization", "Client-id 241dc1dec32c2d8");
+                    HttpEntity<byte[]> request = new HttpEntity<byte[]>(foto, headers);
+                    ResponseEntity<ResponseImgur> responseImgur = restTemplate.postForEntity( "https://api.imgur.com/3/image", request , ResponseImgur.class );
+                    img.setImagem(responseImgur.getBody().getData().getLink());
                 } catch (IOException err) {
                     System.out.println(err);
+                    return ResponseEntity.status(404).build();
+
                 }
 
                 postInstagramImage(img);
