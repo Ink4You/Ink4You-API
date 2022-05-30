@@ -92,6 +92,12 @@ public class TatuadorController {
     @PutMapping(value="/{id}")
     public ResponseEntity updateTatuador(@PathVariable("id") Integer id,
                                          @RequestBody Tatuador tatuador) {
+        String imagem = tatuador.getFoto_perfil();
+        if(imagem.isEmpty()){
+            Tatuador currentTatuador = repositoryTatuador.getById(id);
+            imagem = currentTatuador.getFoto_perfil();
+        }
+        String finalImagem = imagem;
         return repositoryTatuador.findById(id)
                 .map(record -> {
                     record.setNome(tatuador.getNome());
@@ -105,7 +111,7 @@ public class TatuadorController {
                     record.setEmail(tatuador.getEmail());
                     record.setSenha(tatuador.getSenha());
                     record.setConta_instagram(tatuador.getConta_instagram());
-                    record.setFoto_perfil(tatuador.getFoto_perfil());
+                    record.setFoto_perfil(finalImagem);
                     record.setUf(tatuador.getUf());
                     Tatuador updated = repositoryTatuador.save(record);
                     return ResponseEntity.ok().body(updated);

@@ -50,8 +50,6 @@ public class InstagramController {
 
     @GetMapping("/buscar-fotos/{account}")
     public ResponseEntity getInstagramImages(@PathVariable String account) {
-        //http://localhost:8080/instagram/buscar-fotos/rafanildsz
-
         ResponseWebScraper response = null;
         try {
             RestTemplate restTemplate = new RestTemplate();
