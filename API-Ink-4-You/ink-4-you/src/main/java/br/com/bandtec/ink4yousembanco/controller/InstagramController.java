@@ -54,6 +54,19 @@ public class InstagramController {
                 : ResponseEntity.status(204).build();
     }
 
+    @GetMapping("/json/{id_tatuador}")
+    public ResponseEntity getImagesJson(@PathVariable Integer id_tatuador) {
+        if (id_tatuador < 0 || id_tatuador == null) {
+            return ResponseEntity.status(404).build();
+        }
+
+        List<Instagram> images = repositoryInstagram.findImagemByIdTatuadorJson(id_tatuador);
+
+        return images != null
+                ? ResponseEntity.status(200).body(images)
+                : ResponseEntity.status(204).build();
+    }
+
     @GetMapping("/buscar-fotos/{account}")
     public ResponseEntity getInstagramImages(@PathVariable String account) {
         ResponseWebScraper response = null;
