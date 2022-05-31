@@ -85,7 +85,7 @@ public class TatuadorController {
     @PostMapping("/cadastro-tatuador")
     public ResponseEntity cadastroTatuador(@RequestBody Tatuador tatuador){
         repositoryTatuador.save(tatuador);
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(201).body(tatuador);
     }
 
     // EndPoint de alteração de dados do Tatuador
